@@ -1,3 +1,4 @@
+/* Author: Hongtao Zhang */ 
 #pragma once
  
 #include <iostream>
@@ -15,6 +16,7 @@ class Module {
         }
 
         virtual void task() = 0;
+        virtual void task(ThreadPool& thread_pool) = 0;
         
         //======================Create New Thread Version=================================//
         /* create a new thread and run the module in that thread */
@@ -40,7 +42,7 @@ class Module {
         //============================Thread Pool Version=================================//
         /* run the module as a task to be queued for a thread pool*/
         void run(ThreadPool& thread_pool) {
-            thread_pool.execute(boost::bind(&Module::task, this));
+            thread_pool.execute(boost::bind(&Module::task, this, boost::ref(thread_pool)));
         }
         //================================================================================//
 
